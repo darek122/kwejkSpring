@@ -2,8 +2,8 @@ package pl.dareksk.data;
 
 import org.springframework.stereotype.Component;
 import pl.dareksk.models.Gif;
-import sun.net.www.content.image.gif;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,13 +12,13 @@ public class GifRepository {
 
     private  static List<Gif> ALLGifs= Arrays.asList(
 
-            new Gif("android-explosion","michalos",true),
-            new Gif("ben-and-mike","ben",true),
-            new Gif("book-dominos","dom",true),
-            new Gif("compiler-bot","bot",true),
+            new Gif("android-explosion","michalos",true,1),
+            new Gif("ben-and-mike","ben",true,2),
+            new Gif("book-dominos","dom",true,3),
+            new Gif("compiler-bot","bot",true,1),
 
-            new Gif("cowboy-coder","coder",true),
-            new Gif("infinite-andrew","andrw",true)
+            new Gif("cowboy-coder","coder",true,2),
+            new Gif("infinite-andrew","andrw",true,3)
 
     );
     public Gif findByName(String name){
@@ -33,4 +33,24 @@ public class GifRepository {
     public List<Gif> getAllGifs(){
         return ALLGifs;
     }
+
+    public List<Gif> getFavorites(){
+        List<Gif> gifs=new ArrayList<>();
+        for(Gif gif:ALLGifs){
+            if(gif.isFavorite()){
+                gifs.add(gif);
+            }
+        }
+        return gifs;
+    }
+    public List<Gif> getById(int id){
+        List<Gif> gifs=new ArrayList<>();
+        for(Gif gif:ALLGifs){
+            if(gif.getCategoryId()==id){
+                gifs.add(gif);
+            }
+        }
+        return gifs;
+    }
+
 }

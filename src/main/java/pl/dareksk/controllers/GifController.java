@@ -15,11 +15,12 @@ public class GifController {
     @Autowired
     private GifRepository gifRepository;
 
+
     @RequestMapping("/")
     public String listGifs(ModelMap modelMap){
-        List<Gif> gifs=gifRepository.getAllGifs();
-        modelMap.put("gif",gifs);
+        modelMap.addAttribute("gifs",gifRepository.getAllGifs());
         return "home";
+
     }
 
     @RequestMapping("/gif/{name}")
@@ -28,4 +29,22 @@ public class GifController {
         modelMap.put("gif",gif);
         return "gif-details";
     }
+
+    @RequestMapping("/favorites")
+    public String getFavorites(ModelMap modelMap){
+        List<Gif> gifs=gifRepository.getFavorites();
+        modelMap.put("gifs",gifs);
+        return "favorites";
+    }
+    @RequestMapping("/search")
+    public String searchGif(@RequestParam String q, ModelMap modelMap){
+        Gif gif = gifRepository.findByName(q);
+        if (gif == null){
+            String error = "brak obrazka w bazie";
+            modelMap.put("comment",error);
+            return "home";}
+        modelMap.put("gif",gif);
+        return "gif-details";
+    }
+
 }
